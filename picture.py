@@ -1,6 +1,6 @@
 import cv
 import ephem
-import datetime
+from datetime import date, datetime
 
 CV_CAP_PROP_FRAME_WIDTH = 3
 CV_CAP_PROP_FRAME_HEIGHT = 4
@@ -11,7 +11,15 @@ observer.lat = "42:24"
 sun = ephem.Sun()
 sun.compute(observer)
 
-if (ephem.now() > observer.previous_rising(sun)) & (ephem.now() < observer.next_setting(sun)):
+today = ephem.localtime(ephem.now()).date()
+rising = ephem.localtime(observer.previous_rising(sun)).date()
+setting = ephem.localtime(observer.next_setting(sun)).date()
+
+print today
+print  rising
+print setting
+
+if (today == rising) & (today == setting):
   print "daylight"
   capture = cv.CaptureFromCAM(0)
   cv.SetCaptureProperty(capture,CV_CAP_PROP_FRAME_HEIGHT,960)
@@ -19,7 +27,7 @@ if (ephem.now() > observer.previous_rising(sun)) & (ephem.now() < observer.next_
 
   frame = cv.QueryFrame(capture)
   filename = 'images/'
-  filename += str(datetime.datetime.now().isoformat())
+  filename += str(datetime.now().isoformat())
   filename += '.png'
   cv.SaveImage(filename,frame)
 
