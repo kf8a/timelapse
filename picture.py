@@ -21,7 +21,7 @@ if (today == rising) & (today == setting):
   cv.SetCaptureProperty(capture,CV_CAP_PROP_FRAME_WIDTH,1280)
 
   frame = cv.QueryFrame(capture)
-  filename = 'images/'
+  filename = '/home/pi/images/'
   filename += str(datetime.now().isoformat())
   filename += '.png'
   cv.SaveImage(filename,frame)
